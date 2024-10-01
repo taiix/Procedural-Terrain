@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4731120080596091060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7210577157166055920}
+  - component: {fileID: 2144707246433256588}
+  m_Layer: 0
+  m_Name: CustomAdaptiveArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7210577157166055920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731120080596091060}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.3, y: 1, z: 20.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2144707246433256588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731120080596091060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d37e5385efd7064cb1d54c94960acae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Resolution: 10
+  m_Appearance:
+    pathColor: {r: 0, g: 1, b: 0, a: 1}
+    inactivePathColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    width: 0.2
+  m_Looped: 1
+  m_Waypoints:
+  - position: {x: 0.056007385, y: 0, z: -3.6952896}
+    tangent: {x: -5.659522, y: 0, z: 3.9584427}
+    roll: 0
+  - position: {x: -5.3835306, y: 0, z: 6.1579456}
+    tangent: {x: -0.3773346, y: 0, z: 4.7716637}
+    roll: 0
+  - position: {x: 0.141366, y: 0, z: 11.522137}
+    tangent: {x: 1, y: 0, z: 0}
+    roll: 0
+  - position: {x: 1.948122, y: 0, z: 5.8063774}
+    tangent: {x: -1.9050636, y: 0, z: -3.649784}
+    roll: 0
+  - position: {x: 6.9274907, y: 0, z: 5.816686}
+    tangent: {x: 1, y: 0, z: 0}
+    roll: 0
+  - position: {x: 8.026187, y: 0, z: -0.7260723}
+    tangent: {x: -2.794217, y: 0, z: 0.56959534}
+    roll: 0
+  - position: {x: 5.9650497, y: 0, z: -4.895379}
+    tangent: {x: -1.0386596, y: 0, z: -0.18120193}
+    roll: 0

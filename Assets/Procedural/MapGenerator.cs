@@ -43,16 +43,6 @@ public class MapGenerator : MonoBehaviour
 
     #endregion
 
-    #region Falloff Variables
-    [Space]
-    [Header("Falloff Map")]
-    [SerializeField] private bool useFalloffMap;
-    [SerializeField] private FalloffType falloffType;
-    [SerializeField] private AnimationCurve falloffMapCurve;
-    [SerializeField] private float falloffSize;
-    private float[,] falloffMap;
-    #endregion
-
     #region DELETE BEFORE PRODUCTION, ONLY FOR TESTING
     public TerrainRegion[] regions;
     [SerializeField] private Renderer rend;
@@ -60,10 +50,14 @@ public class MapGenerator : MonoBehaviour
 
     #endregion
 
+    TerrainShapeMap shapeMap;
+    FalloffTest falloffMap;
+
     private void Start()
     {
         terrain = GetComponent<Terrain>();
-        
+        shapeMap = GetComponent<TerrainShapeMap>();
+        falloffMap = GetComponent<FalloffTest>();
         terrainData = terrain.terrainData;
 
         CalculatePerlin();
@@ -78,7 +72,6 @@ public class MapGenerator : MonoBehaviour
     #region Generation
     public void CalculatePerlin()
     {
-        GenerateFalloff();
 
         int resolutionValue = (int)resolution;
 
@@ -89,48 +82,49 @@ public class MapGenerator : MonoBehaviour
 
         noiseHeights = new float[width, height];
 
+
+
         if (scale <= 0) scale = 0.0001f;
 
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;
 
-        for (int y = 0; y < height; y++)
+        foreach (Vector2 pos in shapeMap.GetPixelInfo())
         {
-            for (int x = 0; x < width; x++)
+            float amplitude = 1;        //aka height
+            float frequency = 1;        //aka lenght
+            float noiseHeight = 0;
+
+            for (int i = 0; i < octaves; i++)
             {
-                float amplitude = 1;        //aka height
-                float frequency = 1;        //aka lenght
-                float noiseHeight = 0;
+                float xCoord = ((float)pos.x / (width / 2) * scale * frequency) + offset.x;
+                float yCoord = ((float)pos.y / (height / 2) * scale * frequency) + offset.y;
 
-                for (int i = 0; i < octaves; i++)
-                {
-                    float xCoord = ((float)x / (width / 2) * scale * frequency) + offset.x;
-                    float yCoord = ((float)y / (height / 2) * scale * frequency) + offset.y;
+                float perlin = Mathf.PerlinNoise(xCoord, yCoord);
+                noiseHeight += perlin * amplitude;
 
-                    float perlin = Mathf.PerlinNoise(xCoord, yCoord) * 2 - 1;
-                    noiseHeight += perlin * amplitude;
-
-                    amplitude *= persistence;
-                    frequency *= lacunarity;
-                }
-
-                if (noiseHeight < minValue) minValue = noiseHeight;
-                if (noiseHeight > maxValue) maxValue = noiseHeight;
-
-                noiseHeights[x, y] = noiseHeight;
+                amplitude *= persistence;
+                frequency *= lacunarity;
             }
+
+            if (noiseHeight < minValue) minValue = noiseHeight;
+            if (noiseHeight > maxValue) maxValue = noiseHeight;
+
+            noiseHeights[(int)pos.x, (int)pos.y] = noiseHeight;
         }
 
+        float[,] falloffMapArray = falloffMap.GetFalloffValue(width, height);
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                //Same as Mathf.InverseLerp
+                float falloffValue = falloffMapArray[x, y];
+                noiseHeights[x, y] = terrainCurve.Evaluate(
+                    (noiseHeights[x, y] - falloffValue)) * terrainHighMultiplier;
 
-                if (useFalloffMap)
-                    noiseHeights[x, y] = terrainCurve.Evaluate((noiseHeights[x, y] - falloffMap[x, y])) * terrainHighMultiplier;
-                else
-                    noiseHeights[x, y] = terrainCurve.Evaluate((noiseHeights[x, y] - minValue) / (maxValue - minValue)) * terrainHighMultiplier;
+                // noiseHeights[x, y] = terrainCurve.Evaluate(
+                //        (noiseHeights[x, y] - minValue) / (maxValue - minValue)) * terrainHighMultiplier;
             }
         }
 
@@ -139,35 +133,6 @@ public class MapGenerator : MonoBehaviour
         GenerateRegions();      //DELETE LATER
 
         ApplyTerrainSettings();
-    }
-
-    private void GenerateFalloff()
-    {
-        if (!useFalloffMap) return;
-
-        falloffMap = new float[width, height];
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                //makes the grid from -1 to 1, the center is 0, 0 
-                //calculates the dist from current point to the center to create gradient
-                float xDist = ((float)x / width) * 2 - 1;
-                float yDist = ((float)y / height) * 2 - 1;
-
-                float positiveDistX = Mathf.Abs(xDist);
-                float positiveDistY = Mathf.Abs(yDist);
-
-                //If we use higher point we create square shape, if we use euclidean we create circular
-                float value = Mathf.Max(positiveDistX, positiveDistY) / falloffSize;
-
-                if (falloffType == FalloffType.Square)
-                    falloffMap[x, y] = falloffMapCurve.Evaluate(Mathf.Pow(value, 2) * (3 - 2 * value));
-                else if (falloffType == FalloffType.Circle)
-                    falloffMap[x, y] = falloffMapCurve.Evaluate(Mathf.Sqrt(positiveDistX * positiveDistX + positiveDistY * positiveDistY));
-            }
-        }
     }
 
     private void ApplyTerrainSettings()
@@ -309,8 +274,8 @@ public class MapGenerator : MonoBehaviour
 
         texture.Apply();
 
-        rend.sharedMaterial.mainTexture = texture;
-        texture.filterMode = FilterMode.Point;
+        //rend.sharedMaterial.mainTexture = texture;
+        //texture.filterMode = FilterMode.Point;
     }
 
     Texture2D CreateTexture(float[,] map)

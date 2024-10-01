@@ -70,16 +70,16 @@ MonoBehaviour:
     HasValue: 0
   displaySortOrder: 0
   childIdentifiers:
-  - 46fbfdf3fc43db0458918377fd40293e
-  - 2fea114e74ecf3c4f920e1d5cc1c4c40
   - 52eb9df5db46521439908db3a29a1bbb
+  - 2c5177b11d81d824dbb064f9ac8527da
   - b7716510a1f36934c87976f3a81dbf3d
+  - 2fea114e74ecf3c4f920e1d5cc1c4c40
+  - 46fbfdf3fc43db0458918377fd40293e
   - de700ef3f37a49b58a57ae3addf01ad9
-  - 0f8eb3f400726694eb47beb1a9f94ce8
   - fd7c55dab0fce234b8c25f6ffca523c1
   - c88d16e5272a4e241b0ef0ac2e53b73d
   - e7a046c753c3c3d4aacc91f6597f310d
-  - 2c5177b11d81d824dbb064f9ac8527da
+  - 0f8eb3f400726694eb47beb1a9f94ce8
   codecChannels:
     Value: []
     HasValue: 0
@@ -536,8 +536,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: Assets/FMOD Audio/audioSystem/audioSystem.fspro
-  sourceBankPath: Assets/FMOD Audio/audioSystem/Build
+  sourceProjectPath: ../Sound Design/Assets/FMOD Audio/audioSystem/audioSystem.fspro
+  sourceBankPath: ../Sound Design/Assets/FMOD Audio/audioSystem/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -573,22 +573,22 @@ MonoBehaviour:
   EnableErrorCallback: 0
   SharedLibraryUpdateStage: 0
   SharedLibraryTimeSinceStart: 0
-  CurrentVersion: 131619
+  CurrentVersion: 131620
   HideSetupWizard: 1
-  LastEventReferenceScanVersion: 131619
+  LastEventReferenceScanVersion: 131620
   Platforms:
-  - {fileID: -6388821953392247014}
   - {fileID: -9174466651699472399}
-  - {fileID: -2645481792859340448}
-  - {fileID: -4151686765240307662}
   - {fileID: -9003046397977973528}
+  - {fileID: -6607617604378940749}
+  - {fileID: -6388821953392247014}
   - {fileID: -4519229762505426809}
+  - {fileID: -4151686765240307662}
+  - {fileID: -2645481792859340448}
   - {fileID: 223370983281218604}
-  - {fileID: 8787124216285756184}
   - {fileID: 2264541822051476688}
   - {fileID: 2641764286048602433}
   - {fileID: 2904098086358432060}
-  - {fileID: -6607617604378940749}
+  - {fileID: 8787124216285756184}
   MigratedPlatforms: 080000001200000006000000050000000b000000000000000a000000090000000c000000150000000200000001000000
 --- !u!114 &223370983281218604
 MonoBehaviour:
