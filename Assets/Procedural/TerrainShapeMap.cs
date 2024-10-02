@@ -6,8 +6,10 @@ public class TerrainShapeMap : MonoBehaviour
     public Texture2D texture;
 
     private const int scaleFactor = 8; // 512 / 64 = 8
+    [Range(0,1f)] public float distanceFactor; // 512 / 64 = 8
 
-    private List<Vector2> list = new List<Vector2>();
+    private List<Vector3> islandPoints = new List<Vector3>();
+    public List<Vector3> borders = new List<Vector3>();
 
     private void Start()
     {
@@ -26,27 +28,38 @@ public class TerrainShapeMap : MonoBehaviour
         {
             for (int x = 0; x < texture.width; x++)
             {
-                float pixelColor = texture.GetPixel(x, y).grayscale;
+                float pixelColorHeight = texture.GetPixel(x, y).grayscale;
+                Color pixelColorBorder = texture.GetPixel(x, y);
 
                 int scaledX = x * scaleFactor;
                 int scaledY = y * scaleFactor;
+
+                float tolerance = .9f;
+
+                if (Mathf.Abs(pixelColorBorder.r - 1.0f) < tolerance && pixelColorBorder.g < tolerance && pixelColorBorder.b < tolerance)
+                {
+                    islandPoints.Add(new Vector2(scaledX, scaledY));
+                }
 
                 for (int scX = scaledX; scX < scaledX + scaleFactor; scX++)
                 {
                     for (int scY = scaledY; scY < scaledY + scaleFactor; scY++)
                     {
-
-                        if (!Mathf.Approximately(pixelColor, 1f))
-                            list.Add(new Vector2(scX, scY));
+                        if (!Mathf.Approximately(pixelColorHeight, 1f))
+                            islandPoints.Add(new Vector2(scX, scY));
                     }
                 }
             }
         }
-
     }
 
-    public List<Vector2> GetPixelInfo()
+    public List<Vector3> GetIslandInfo()
     {
-        return list;
+        return islandPoints;
     }
-}
+
+    public List<Vector3> GetBordersInfo()
+    {
+        return borders;
+    }
+    }
